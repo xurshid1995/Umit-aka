@@ -129,26 +129,21 @@ def generate_sale_receipt_pdf(
 
     y -= 6*mm
 
-    # Mahsulotlar ro'yxati
+    # Mahsulotlar ro'yxati - avval barcha ma'lumotlarni to'playmiz, keyin chizamiz
     c.setFont("Helvetica-Bold", 8)
+
+    # 1. BOSQICH: Har bir item uchun row_height va name_lines ni hisoblab olish
+    all_items_data = []
     for item in sale_data.get('items', []):
-        # Har bir item uchun matn rangini qora qilib o'rnatish
-        c.setFillColor(colors.black)
+        product_name = item.get('name', '')
+        max_width = col1_width - 4*mm
 
-        # Mahsulot nomini qatorlarga bo'lish (uzun bo'lsa)
-        product_name = item['name']
-        max_width = col1_width - 4*mm  # 2mm padding har tarafdan
-
-        # Matn kengligini tekshirish va qatorlarga bo'lish
         name_lines = []
         words = product_name.split()
         current_line = ""
-
         for word in words:
             test_line = current_line + (" " if current_line else "") + word
-            # Matn kengligini o'lchash (8 pt font)
             text_width = pdfmetrics.stringWidth(test_line, "Helvetica-Bold", 8)
-
             if text_width <= max_width:
                 current_line = test_line
             else:
@@ -156,45 +151,16 @@ def generate_sale_receipt_pdf(
                     name_lines.append(current_line)
                     current_line = word
                 else:
-                    # Bitta so'z juda uzun bo'lsa, uni qisqartirish
                     name_lines.append(word[:30])
                     current_line = ""
-
         if current_line:
             name_lines.append(current_line)
-
-        # Agar qator bo'lmasa, kamida bitta qator qo'shish
         if not name_lines:
             name_lines = [product_name[:30]]
 
-        # Row height - mahsulot nomi qatorlari soniga qarab
         lines_count = len(name_lines)
         row_height = max(6*mm, (3 + lines_count * 3) * mm)
 
-        # 1. AVVAL: Narx ustuni uchun sariq fon (background)
-        c.setFillColor(colors.Color(1, 1, 0.7))  # Och sariq rang
-        c.rect(table_left + col1_width + col2_width, y - row_height, col3_width, row_height, stroke=0, fill=1)
-
-        # 2. Qator borderlari (sariq fondan keyin, matndan oldin)
-        c.setFillColor(colors.black)
-        c.rect(table_left, y - row_height, table_width, row_height, stroke=1, fill=0)
-        c.line(table_left + col1_width, y - row_height, table_left + col1_width, y)
-        c.line(table_left + col1_width + col2_width, y - row_height, table_left + col1_width + col2_width, y)
-
-        # 3. KEYIN: Barcha matnlarni rectangllar ustidan chizish
-        c.setFillColor(colors.black)
-
-        # Mahsulot nomini chizish (bir necha qator bo'lishi mumkin)
-        name_y = y - 4*mm
-        for line in name_lines:
-            c.drawString(table_left + 2*mm, name_y, line)
-            name_y -= 3*mm
-
-        # Miqdor (yuqori qatorda)
-        quantity = item['quantity']
-        c.drawCentredString(table_left + col1_width + col2_width/2, y - 4*mm, str(int(quantity)))
-
-        # Narx (valyutaga qarab, yuqori qatorda)
         if currency == 'usd':
             unit_price = item.get('unit_price_usd', item.get('unit_price', 0))
             price_str = f"${unit_price:.2f}"
@@ -202,14 +168,73 @@ def generate_sale_receipt_pdf(
             unit_price = item.get('unit_price_uzs', item.get('unit_price', 0))
             price_str = f"{unit_price:,.0f}"
 
-        c.drawRightString(table_right - 2*mm, y - 4*mm, price_str)
+        all_items_data.append({
+            'name_lines': name_lines,
+            'row_height': row_height,
+            'quantity': item.get('quantity', 0),
+            'price_str': price_str,
+        })
 
-        y -= row_height
+    # 2. BOSQICH: Avval barcha sariq fonlarni chizish
+    item_y = y
+    for it in all_items_data:
+        rh = it['row_height']
+        c.setFillColor(colors.Color(1, 1, 0.7))
+        c.rect(table_left + col1_width + col2_width, item_y - rh,
+               col3_width, rh, stroke=0, fill=1)
+        item_y -= rh
 
-        if y < 40*mm:  # Sahifa tugashidan oldin
+    # 3. BOSQICH: Barcha border chiziqlarini chiz (rect emas, line bilan)
+    c.setStrokeColor(colors.black)
+    c.setLineWidth(0.75)
+    item_y = y
+    for it in all_items_data:
+        rh = it['row_height']
+        # Yuqori chiziq
+        c.line(table_left, item_y, table_right, item_y)
+        # Pastki chiziq
+        c.line(table_left, item_y - rh, table_right, item_y - rh)
+        # Chap chiziq
+        c.line(table_left, item_y, table_left, item_y - rh)
+        # O'ng chiziq
+        c.line(table_right, item_y, table_right, item_y - rh)
+        # Ustun ajratgichlar
+        c.line(table_left + col1_width, item_y, table_left + col1_width, item_y - rh)
+        c.line(table_left + col1_width + col2_width, item_y,
+               table_left + col1_width + col2_width, item_y - rh)
+        item_y -= rh
+        if item_y < 40*mm:
+            break
+
+    # 4. BOSQICH: Barcha matnlarni chizish (eng oxirida, hamma narsadan keyin)
+    c.setFillColor(colors.black)
+    c.setFont("Helvetica-Bold", 8)
+    item_y = y
+    for it in all_items_data:
+        rh = it['row_height']
+        text_top_y = item_y - 4*mm
+
+        # Mahsulot nomi
+        name_y = text_top_y
+        for line in it['name_lines']:
+            c.drawString(table_left + 2*mm, name_y, line)
+            name_y -= 3*mm
+
+        # Miqdor
+        c.drawCentredString(table_left + col1_width + col2_width/2,
+                            text_top_y, str(int(it['quantity'])))
+
+        # Narx
+        c.drawRightString(table_right - 2*mm, text_top_y, it['price_str'])
+
+        item_y -= rh
+
+        if item_y < 40*mm:
             c.showPage()
-            y = page_height - 10*mm
+            item_y = page_height - 10*mm
             c.setFont("Helvetica-Bold", 8)
+
+    y = item_y
 
     y -= 8*mm  # Jadval va jami summa orasidagi masofa
 
