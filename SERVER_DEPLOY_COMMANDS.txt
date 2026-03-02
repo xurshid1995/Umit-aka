@@ -21,10 +21,10 @@ pip install psutil==5.9.0
 chmod +x check_logs.sh
 
 # 7. Gunicorn service restart
-sudo systemctl restart gunicorn
+sudo systemctl restart xurshid
 
 # 8. Service holatini tekshirish
-sudo systemctl status gunicorn
+sudo systemctl status xurshid
 
 # 9. Health check test
 curl http://localhost:5000/health
@@ -35,7 +35,7 @@ curl http://localhost:5000/health
 # ========================================
 # TEZKOR DEPLOY (bitta buyruq bilan)
 # ========================================
-ssh root@sergeli0606.uz "cd /var/www/xurshid && git pull origin main && source venv/bin/activate && sudo systemctl restart gunicorn && sleep 3 && sudo systemctl status gunicorn --no-pager"
+ssh root@sergeli0606.uz "cd /var/www/xurshid && git pull origin main && source venv/bin/activate && sudo systemctl restart xurshid && sleep 3 && sudo systemctl status xurshid --no-pager"
 
 # ========================================
 # TEKSHIRISH
@@ -53,7 +53,7 @@ ssh root@sergeli0606.uz "cd /var/www/xurshid && git pull origin main && source v
 tail -50 logs/error.log
 
 # Gunicorn loglarni ko'rish:
-sudo journalctl -u gunicorn -n 50
+sudo journalctl -u xurshid -n 50
 
 # Service restart:
-sudo systemctl restart gunicorn
+sudo systemctl restart xurshid
