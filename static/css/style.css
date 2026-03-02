@@ -282,6 +282,16 @@ body {
     border-radius: 4px;
     background: white;
     padding: 2px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.header-qr:hover {
+    transform: scale(4);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    border-radius: 6px;
+    z-index: 9999;
+    position: relative;
 }
 
 .header-bot-name {
