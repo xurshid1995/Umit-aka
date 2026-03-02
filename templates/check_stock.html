@@ -60,6 +60,33 @@
 .table tbody tr:hover {
     background: #f8f9fa !important;
 }
+
+/* Header mobilga moslashtirish */
+@media (max-width: 480px) {
+    .page-header {
+        padding: 0.75rem 1rem;
+    }
+    .page-header h2 {
+        font-size: 1.1rem;
+    }
+    .page-header .header-wrapper {
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+    }
+    .page-header .header-controls {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 0.5rem !important;
+    }
+    .page-header .header-controls select,
+    .page-header .header-controls button {
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .row.mb-5 {
+        margin-bottom: 1rem !important;
+    }
+}
 </style>
 {% endblock %}
 
@@ -69,9 +96,9 @@
     <div class="row mb-5">
         <div class="col-12">
             <div class="page-header">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="header-wrapper" style="display: flex; justify-content: space-between; align-items: center;">
                     <h2 style="margin: 0;"><i class="fas fa-clipboard-check"></i> Qoldiqni tekshirish</h2>
-                    <div style="display: flex; gap: 1rem; align-items: center;">
+                    <div class="header-controls" style="display: flex; gap: 1rem; align-items: center;">
                         <select id="locationSelect" class="form-select" style="background-color: white; border: none; font-size: 1rem; padding: 0.75rem 1rem;">
                             <option value="">Joylashuvni tanlang...</option>
                         </select>
