@@ -8560,11 +8560,13 @@ def api_add_customer():
             if current_user.role == 'sotuvchi':
                 allowed_locations = current_user.allowed_locations or []
                 store_id_int = int(store_id)  # String'dan integer'ga o'tkazish
+                # extract_location_ids bilan eski va yangi formatlarni qo'llab-quvvatlash
+                allowed_store_ids = extract_location_ids(allowed_locations, 'store')
                 print(
-                    f"🔍 Customer API - Checking if {store_id_int} in {allowed_locations}")
-                if store_id_int not in allowed_locations:
+                    f"🔍 Customer API - Checking if {store_id_int} in allowed_store_ids={allowed_store_ids} (raw: {allowed_locations})")
+                if store_id_int not in allowed_store_ids:
                     print(
-                        f"❌ Customer API - Store {store_id_int} not in allowed locations {allowed_locations}")
+                        f"❌ Customer API - Store {store_id_int} not in allowed store ids {allowed_store_ids}")
                     return jsonify(
                         {'error': 'Bu dokonga mijoz qo\'shish uchun ruxsatingiz yo\'q'}), 403
                 else:
