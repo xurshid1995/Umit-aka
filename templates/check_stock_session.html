@@ -63,6 +63,103 @@
             padding: 15px !important;
         }
     }
+
+    /* 480px mobil moslashtirish */
+    @media (max-width: 480px) {
+        .check-stock-grid {
+            padding: 6px !important;
+            gap: 10px !important;
+        }
+        .check-stock-box {
+            padding: 10px !important;
+        }
+
+        /* Header */
+        .page-header {
+            padding: 0.5rem 0.75rem !important;
+        }
+        .page-header h2 {
+            font-size: 1rem !important;
+        }
+        .session-header-wrapper {
+            flex-direction: column !important;
+            gap: 0.5rem !important;
+            align-items: stretch !important;
+        }
+        .session-header-buttons {
+            flex-direction: column !important;
+            gap: 0.5rem !important;
+            width: 100% !important;
+        }
+        .session-header-buttons button,
+        .session-header-buttons a {
+            width: 100% !important;
+            text-align: center !important;
+            font-size: 1rem !important;
+            padding: 0.5rem 1rem !important;
+            box-sizing: border-box !important;
+        }
+        .row.mb-4 {
+            margin-bottom: 0.5rem !important;
+        }
+
+        /* Mahsulotlar jadvali - min-width olib tashlash */
+        .table-wrapper-check table {
+            min-width: unset !important;
+            width: 100% !important;
+        }
+        .table-wrapper-check th,
+        .table-wrapper-check td {
+            padding: 6px 4px !important;
+            font-size: 12px !important;
+        }
+        .table-wrapper-check th:first-child,
+        .table-wrapper-check td:first-child {
+            width: auto !important;
+            max-width: 120px !important;
+            word-break: break-word !important;
+        }
+        .table-wrapper-check th,
+        .table-wrapper-check td {
+            width: auto !important;
+        }
+
+        /* Filtr tugmalar */
+        .check-stock-box > div:nth-child(2) {
+            flex-direction: column !important;
+        }
+        .check-stock-box > div:nth-child(2) > div {
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+        }
+        .check-stock-box > div:nth-child(2) > div button {
+            padding: 6px 10px !important;
+            font-size: 11px !important;
+        }
+
+        /* Sarlavha bar */
+        .check-stock-box > div:first-child {
+            height: auto !important;
+            padding: 10px !important;
+            font-size: 14px !important;
+        }
+        .check-stock-box > div:first-child div {
+            font-size: 14px !important;
+        }
+
+        /* Modal oyna */
+        #quantityModal > div {
+            width: 90% !important;
+            max-width: 350px !important;
+            padding: 20px !important;
+        }
+
+        /* Pagination */
+        #productsPagination button {
+            padding: 6px 12px !important;
+            font-size: 12px !important;
+        }
+    }
 </style>
 {% endblock %}
 
@@ -72,11 +169,11 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="page-header">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="session-header-wrapper" style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <h2 style="margin: 0;"><i class="fas fa-clipboard-check"></i> {{ location_name }} - Qoldiqni tekshirish</h2>
                     </div>
-                    <div style="display: flex; gap: 1rem; align-items: center;">
+                    <div class="session-header-buttons" style="display: flex; gap: 1rem; align-items: center;">
                         <button type="button" onclick="finishCheck()" style="background-color: #dc3545 !important; color: white !important; border: none !important; padding: 0.5rem 1rem; font-size: 1.25rem; border-radius: 0.5rem; cursor: pointer;">
                             <i class="fas fa-check me-2"></i>Tekshiruvni yakunlash
                         </button>
