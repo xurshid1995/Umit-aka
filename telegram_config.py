@@ -8,7 +8,7 @@ Sozlamalar va konstantalar
 TELEGRAM_CONFIG = {
     # Bot asosiy sozlamalari
     'bot_name': 'Sergeli 143 Qarz Bot',
-    'bot_username': '@Sergeli143_bot',  # Yangi bot username
+    'bot_username': '@UzunHissobot_bot',  # Yangi bot username
     
     # Xabar yuborish sozlamalari
     'rate_limit': 1,  # Sekundiga 1 ta xabar

@@ -48,7 +48,7 @@ def main():
             return
         
         logger.info("✅ Telegram Bot tayyor!")
-        logger.info("📞 Bot manzili: https://t.me/Ravonqorakolbot")
+        logger.info("📞 Bot manzili: https://t.me/UzunHissobot_bot")
         logger.info("🔄 Bot polling rejimida ishlamoqda...")
         
         # Bot polling rejimida ishga tushirish
