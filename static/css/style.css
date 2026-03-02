@@ -255,6 +255,41 @@ body {
     margin: 0;
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-bot-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 4px 10px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+.header-bot-link:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.header-qr {
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    background: white;
+    padding: 2px;
+}
+
+.header-bot-name {
+    color: #e0f0ff;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
 .header-right {
     display: flex;
     align-items: center;
