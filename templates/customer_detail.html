@@ -1788,89 +1788,77 @@ function exportSaleToExcel() {
         return;
     }
     const sale = currentSaleData;
-    const wb = XLSX.utils.book_new();
-
-    const border = {top:{style:'thin',color:{rgb:'000000'}},bottom:{style:'thin',color:{rgb:'000000'}},left:{style:'thin',color:{rgb:'000000'}},right:{style:'thin',color:{rgb:'000000'}}};
-    const sStore = {font:{bold:true,sz:18,name:'Calibri'},fill:{fgColor:{rgb:'D9E2F3'}},alignment:{horizontal:'center',vertical:'center'},border:border};
-    const sHead = {font:{bold:true,sz:12,name:'Calibri'},fill:{fgColor:{rgb:'F0F0F0'}},alignment:{vertical:'center',wrapText:true},border:border};
-    const sHeadC = {font:{bold:true,sz:12,name:'Calibri'},fill:{fgColor:{rgb:'F0F0F0'}},alignment:{horizontal:'center',vertical:'center',wrapText:true},border:border};
-    const sData = {font:{sz:12,name:'Calibri'},alignment:{vertical:'center',wrapText:true},border:border};
-    const sDataC = {font:{sz:12,name:'Calibri'},alignment:{horizontal:'center',vertical:'center'},border:border};
-    const sDataT = {font:{sz:12,name:'Calibri'},alignment:{vertical:'center',wrapText:true},border:border,numFmt:'@'};
-    const sBold = {font:{bold:true,sz:12,name:'Calibri'},alignment:{vertical:'center'},border:border};
-    const sEmpty = {border:border};
-
-    const merges = [];
-    const rows = [];
-    let r = 0;
-    function makeRow(vals) { const row = new Array(15).fill(''); for (const [c,v] of Object.entries(vals)) row[parseInt(c)]=v; return row; }
-    function M(r1,c1,r2,c2) { merges.push({s:{r:r1,c:c1},e:{r:r2,c:c2}}); }
-
-    rows.push(makeRow({0: sale.store_name || "Do'kon"}));
-    M(r,0,r,14); r++;
-
-    rows.push(makeRow({}));
-    M(r,0,r,14); r++;
-
-    rows.push(makeRow({0:'Sana',3:'Mijoz',6:'Mijoz telefoni',9:'Sotuvchi',12:'Sotuvchi telefoni'}));
-    M(r,0,r,2); M(r,3,r,5); M(r,6,r,8); M(r,9,r,11); M(r,12,r,14); r++;
-
     const dateStr = new Date(sale.sale_date).toLocaleString('uz-UZ', {timeZone:'Asia/Tashkent'});
+    const storeName = sale.store_name || "Do'kon";
     const custPhone = (sale.customer_phone && sale.customer_phone !== '+998 XX XXX XX XX') ? sale.customer_phone : '';
-    rows.push(makeRow({0:dateStr, 3:sale.customer_name||'Noma\'lum', 6:custPhone, 9:sale.seller_name||'Admin', 12:sale.seller_phone||''}));
-    M(r,0,r,2); M(r,3,r,5); M(r,6,r,8); M(r,9,r,11); M(r,12,r,14); r++;
 
-    rows.push(makeRow({}));
-    M(r,0,r,14); r++;
-
-    rows.push(makeRow({0:'✓',1:'№',2:'Mahsulot nomi',12:'Miqdor',13:'Birlik narxi',14:'Jami narx'}));
-    M(r,2,r,11); r++;
-
-    const firstProductRow = r;
+    // Mahsulotlar qatorlari
+    let itemsHtml = '';
     sale.items.forEach((item, index) => {
-        rows.push(makeRow({1:String(index+1).padStart(2,'0'), 2:item.product_name, 12:item.quantity, 13:parseFloat(item.unit_price).toFixed(2)+'$', 14:parseFloat(item.total_price).toFixed(2)+'$'}));
-        M(r,2,r,11); r++;
+        itemsHtml += '<tr>' +
+            '<td style="border:1px solid #000;font-size:12pt;text-align:center;"></td>' +
+            '<td style="border:1px solid #000;font-size:12pt;text-align:center;mso-number-format:\'\\@\'">' + String(index+1).padStart(2,'0') + '</td>' +
+            '<td colspan="10" style="border:1px solid #000;font-size:12pt;">' + (item.product_name||'') + '</td>' +
+            '<td style="border:1px solid #000;font-size:12pt;text-align:center;">' + item.quantity + '</td>' +
+            '<td style="border:1px solid #000;font-size:12pt;">' + parseFloat(item.unit_price).toFixed(2) + '$</td>' +
+            '<td style="border:1px solid #000;font-size:12pt;">' + parseFloat(item.total_price).toFixed(2) + '$</td>' +
+            '</tr>';
     });
 
-    rows.push(makeRow({}));
-    M(r,0,r,14); r++;
+    const html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">' +
+    '<head><meta charset="UTF-8">' +
+    '<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>' +
+    '<x:Name>Savdo ' + sale.id + '</x:Name>' +
+    '<x:WorksheetOptions><x:PageSetup><x:Layout x:Orientation="Landscape"/></x:PageSetup></x:WorksheetOptions>' +
+    '</x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->' +
+    '<style>td{mso-number-format:"\\@";}</style></head><body>' +
+    '<table border="0" cellpadding="2" cellspacing="0" style="border-collapse:collapse;font-family:Calibri;">' +
+    '<tr><td colspan="15" style="border:1px solid #000;font-size:18pt;font-weight:bold;text-align:center;background:#D9E2F3;height:30pt;">' + storeName + '</td></tr>' +
+    '<tr><td colspan="15" style="border:1px solid #000;"></td></tr>' +
+    '<tr>' +
+        '<td colspan="3" style="border:1px solid #000;font-size:12pt;font-weight:bold;background:#F0F0F0;">Sana</td>' +
+        '<td colspan="3" style="border:1px solid #000;font-size:12pt;font-weight:bold;background:#F0F0F0;">Mijoz</td>' +
+        '<td colspan="3" style="border:1px solid #000;font-size:12pt;font-weight:bold;background:#F0F0F0;">Mijoz telefoni</td>' +
+        '<td colspan="3" style="border:1px solid #000;font-size:12pt;font-weight:bold;background:#F0F0F0;">Sotuvchi</td>' +
+        '<td colspan="3" style="border:1px solid #000;font-size:12pt;font-weight:bold;background:#F0F0F0;">Sotuvchi telefoni</td>' +
+    '</tr>' +
+    '<tr>' +
+        '<td colspan="3" style="border:1px solid #000;font-size:12pt;">' + dateStr + '</td>' +
+        '<td colspan="3" style="border:1px solid #000;font-size:12pt;">' + (sale.customer_name||'Noma\'lum') + '</td>' +
+        '<td colspan="3" style="border:1px solid #000;font-size:12pt;">' + custPhone + '</td>' +
+        '<td colspan="3" style="border:1px solid #000;font-size:12pt;">' + (sale.seller_name||'Admin') + '</td>' +
+        '<td colspan="3" style="border:1px solid #000;font-size:12pt;">' + (sale.seller_phone||'') + '</td>' +
+    '</tr>' +
+    '<tr><td colspan="15" style="border:1px solid #000;"></td></tr>' +
+    '<tr>' +
+        '<td style="border:1px solid #000;font-size:12pt;font-weight:bold;background:#F0F0F0;">✓</td>' +
+        '<td style="border:1px solid #000;font-size:12pt;font-weight:bold;background:#F0F0F0;">№</td>' +
+        '<td colspan="10" style="border:1px solid #000;font-size:12pt;font-weight:bold;background:#F0F0F0;">Mahsulot nomi</td>' +
+        '<td style="border:1px solid #000;font-size:12pt;font-weight:bold;background:#F0F0F0;text-align:center;">Miqdor</td>' +
+        '<td style="border:1px solid #000;font-size:12pt;font-weight:bold;background:#F0F0F0;">Birlik narxi</td>' +
+        '<td style="border:1px solid #000;font-size:12pt;font-weight:bold;background:#F0F0F0;">Jami narx</td>' +
+    '</tr>' +
+    itemsHtml +
+    '<tr><td colspan="15" style="border:1px solid #000;"></td></tr>' +
+    '<tr>' +
+        '<td style="border:1px solid #000;"></td>' +
+        '<td style="border:1px solid #000;"></td>' +
+        '<td colspan="10" style="border:1px solid #000;"></td>' +
+        '<td style="border:1px solid #000;"></td>' +
+        '<td style="border:1px solid #000;font-size:12pt;font-weight:bold;">Jami:</td>' +
+        '<td style="border:1px solid #000;font-size:12pt;font-weight:bold;">' + parseFloat(sale.total_amount).toFixed(2) + '$</td>' +
+    '</tr>' +
+    '</table></body></html>';
 
-    rows.push(makeRow({13:'Jami:', 14:parseFloat(sale.total_amount).toFixed(2)+'$'}));
-    M(r,2,r,11); r++;
-
-    const ws = XLSX.utils.aoa_to_sheet(rows);
-    ws['!merges'] = merges;
-
-    for (let ri = 0; ri < rows.length; ri++) {
-        for (let ci = 0; ci < 15; ci++) {
-            const ref = XLSX.utils.encode_cell({r:ri,c:ci});
-            if (!ws[ref]) ws[ref] = {v:'',t:'s'};
-            if (ri === 0) ws[ref].s = sStore;
-            else if (ri === 1 || ri === firstProductRow + sale.items.length) ws[ref].s = sEmpty;
-            else if (ri === 2) ws[ref].s = sHead;
-            else if (ri === 3) ws[ref].s = sData;
-            else if (ri === 4) ws[ref].s = sEmpty;
-            else if (ri === 5) ws[ref].s = (ci===12) ? sHeadC : sHead;
-            else if (ri >= firstProductRow && ri < firstProductRow + sale.items.length) {
-                if (ci === 1) ws[ref].s = sDataT;
-                else if (ci === 12) ws[ref].s = sDataC;
-                else ws[ref].s = sData;
-            }
-            else if (ri === firstProductRow + sale.items.length + 1) ws[ref].s = sBold;
-        }
-    }
-
-    ws['!cols'] = [
-        {wch:3},{wch:4},
-        {wch:5},{wch:5},{wch:5},{wch:5},{wch:8},{wch:8},{wch:8},{wch:5},{wch:5},{wch:5},
-        {wch:7},{wch:11},{wch:11}
-    ];
-    ws['!rows'] = [{hpt:30}, null, {hpt:22}, {hpt:22}];
-    ws['!pageSetup'] = {paperSize:9, orientation:'landscape', fitToWidth:1, fitToHeight:0, scale:100};
-    ws['!margins'] = {left:0.4, right:0.4, top:0.5, bottom:0.5, header:0.3, footer:0.3};
-
-    XLSX.utils.book_append_sheet(wb, ws, 'Savdo ' + sale.id);
-    XLSX.writeFile(wb, 'savdo_' + sale.id + '_' + new Date().toISOString().split('T')[0] + '.xlsx');
+    const blob = new Blob([html], {type: 'application/vnd.ms-excel;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'savdo_' + sale.id + '_' + new Date().toISOString().split('T')[0] + '.xls';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
     console.log('Excel export: Savdo ID', sale.id);
 }
 
