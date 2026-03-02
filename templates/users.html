@@ -338,36 +338,7 @@
         <!-- Mobile cards will be populated here -->
     </div>
 
-    <!-- Aktiv seanslar bo'limi -->
-    <div class="controls-section" style="margin-top: 2rem;">
-        <h2>🔐 Aktiv seanslar</h2>
-        <div style="margin-left:auto">
-            <button onclick="loadActiveSessions()" class="btn-add" style="border: none; cursor: pointer;">🔄 Yangilash</button>
-        </div>
-    </div>
 
-    <div id="sessionsLoadingState" style="display:none">Seanslar yuklanmoqda...</div>
-    <div id="sessionsEmptyState" style="display:none"> <h3>📭 Aktiv seanslar topilmadi</h3> </div>
-
-    <div class="table-responsive">
-        <div class="users-table-container">
-        <table class="users-table" id="sessionsTable" style="display:none">
-            <thead>
-                <tr>
-                    <th>Foydalanuvchi</th>
-                    <th>Login</th>
-                    <th>Do'kon</th>
-                    <th>Rol</th>
-                    <th>IP Manzil</th>
-                    <th>Kirish vaqti</th>
-                    <th>Oxirgi faollik</th>
-                    <th>Brauzer</th>
-                </tr>
-            </thead>
-            <tbody id="sessionsTableBody"></tbody>
-        </table>
-        </div>
-    </div>
 
 </div>
 
@@ -378,7 +349,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         loadUsers();
-        loadActiveSessions();
+
     });
 
 
@@ -549,66 +520,7 @@
 
     function showError(msg) { document.getElementById('loadingState').innerHTML = `<h3 style="color:#e74c3c">❌ ${msg}</h3>`; }
 
-    // Aktiv seanslarni yuklash
-    async function loadActiveSessions() {
-        const sessionsLoadingState = document.getElementById('sessionsLoadingState');
-        const sessionsEmptyState = document.getElementById('sessionsEmptyState');
-        const sessionsTable = document.getElementById('sessionsTable');
-        const sessionsTableBody = document.getElementById('sessionsTableBody');
-        
-        try {
-            sessionsLoadingState.style.display = 'block';
-            sessionsEmptyState.style.display = 'none';
-            sessionsTable.style.display = 'none';
-            
-            const res = await fetch('/api/active-sessions');
-            const data = await res.json();
-            
-            sessionsLoadingState.style.display = 'none';
-            
-            if (!data.success || data.sessions.length === 0) {
-                sessionsEmptyState.style.display = 'block';
-                return;
-            }
-            
-            sessionsTable.style.display = 'table';
-            
-            let tableHtml = '';
-            data.sessions.forEach(s => {
-                const loginTime = new Date(s.login_time).toLocaleString('uz-UZ', { timeZone: 'Asia/Tashkent' });
-                const lastActivity = new Date(s.last_activity).toLocaleString('uz-UZ', { timeZone: 'Asia/Tashkent' });
-                const storeName = s.store_name || 'Barcha dokonlar';
-                const roleDisplay = s.role === 'admin' ? 'Administrator' : s.role === 'kassir' ? 'Kassir' : s.role === 'sotuvchi' ? 'Sotuvchi' : s.role;
-                
-                // Brauzer nomini qisqartirish
-                let browser = 'Noma\'lum';
-                if (s.user_agent) {
-                    if (s.user_agent.includes('Chrome')) browser = 'Chrome';
-                    else if (s.user_agent.includes('Firefox')) browser = 'Firefox';
-                    else if (s.user_agent.includes('Safari')) browser = 'Safari';
-                    else if (s.user_agent.includes('Edge')) browser = 'Edge';
-                    else if (s.user_agent.includes('Opera')) browser = 'Opera';
-                }
-                
-                tableHtml += `<tr>
-                    <td title="${s.full_name || '-'}">${s.full_name || '-'}</td>
-                    <td title="${s.username || '-'}">${s.username || '-'}</td>
-                    <td title="${storeName}">${storeName}</td>
-                    <td title="${roleDisplay}">${roleDisplay}</td>
-                    <td title="${s.ip_address || '-'}">${s.ip_address || '-'}</td>
-                    <td title="${loginTime}">${loginTime}</td>
-                    <td title="${lastActivity}">${lastActivity}</td>
-                    <td title="${s.user_agent || '-'}">${browser}</td>
-                </tr>`;
-            });
-            
-            sessionsTableBody.innerHTML = tableHtml;
-            
-        } catch (e) {
-            console.error('Seanslarni yuklashda xatolik:', e);
-            sessionsLoadingState.innerHTML = `<h3 style="color:#e74c3c">❌ Seanslarni yuklashda xatolik</h3>`;
-        }
-    }
+
 </script>
 
 {% endblock %}
