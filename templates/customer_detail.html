@@ -1870,7 +1870,7 @@ function generateExcelHTML(sale) {
     sale.items.forEach((item, index) => {
         html += `
         <tr>
-            <td colspan="1">${index + 1}</td>
+            <td colspan="1">${String(index + 1).padStart(2, '0')}</td>
             <td colspan="6">${item.product_name}</td>
             <td colspan="1">${item.quantity}</td>
             <td colspan="2">$${parseFloat(item.unit_price).toFixed(2)}</td>
