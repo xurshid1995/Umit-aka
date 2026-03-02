@@ -2670,8 +2670,11 @@ function exportSaleToExcel() {
     '<x:Name>Savdo ' + sale.id + '</x:Name>' +
     '<x:WorksheetOptions><x:PageSetup><x:Layout x:Orientation="Landscape"/></x:PageSetup></x:WorksheetOptions>' +
     '</x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->' +
-    '<style>td{mso-number-format:"\\@";}</style></head><body>' +
-    '<table border="0" cellpadding="2" cellspacing="0" style="border-collapse:collapse;font-family:Calibri;">' +
+    '<style>@page{size:landscape;margin:0.4in 0.4in 0.5in 0.4in;}td{mso-number-format:"\\@";}</style></head><body>' +
+    '<table border="0" cellpadding="2" cellspacing="0" style="border-collapse:collapse;font-family:Calibri;width:100%;">' +
+    '<col width="25"><col width="35">' +
+    '<col width="45"><col width="45"><col width="45"><col width="45"><col width="45"><col width="45"><col width="45"><col width="45"><col width="45"><col width="45">' +
+    '<col width="55"><col width="80"><col width="80">' +
     // Do'kon nomi
     '<tr><td colspan="15" style="border:1px solid #000;font-size:18pt;font-weight:bold;text-align:center;background:#D9E2F3;height:30pt;">' + storeName + '</td></tr>' +
     // Bo'sh qator
