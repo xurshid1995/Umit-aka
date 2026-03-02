@@ -1,4 +1,4 @@
-[Unit]
+﻿[Unit]
 Description=Telegram Bot - Qarz Eslatmalari
 After=network.target postgresql.service
 Wants=postgresql.service
@@ -7,9 +7,9 @@ Wants=postgresql.service
 Type=simple
 User=www-data
 Group=www-data
-WorkingDirectory=/var/www/xurshid
-Environment="PATH=/var/www/xurshid/venv/bin"
-ExecStart=/var/www/xurshid/venv/bin/python3 /var/www/xurshid/run_telegram_bot.py
+WorkingDirectory=/var/www/umit_aka
+Environment="PATH=/var/www/umit_aka/venv/bin"
+ExecStart=/var/www/umit_aka/venv/bin/python3 /var/www/umit_aka/run_telegram_bot.py
 Restart=always
 RestartSec=10
 

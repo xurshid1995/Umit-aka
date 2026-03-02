@@ -1,12 +1,12 @@
-# ========================================
+﻿# ========================================
 # SERVERGA O'RNATISH KOMANDALAR
 # ========================================
 
 # 1. Serverga kirish
-ssh root@sergeli0606.uz
+ssh root@46.101.126.39
 
 # 2. Loyiha papkasiga o'tish
-cd /var/www/xurshid
+cd /var/www/umit_aka
 
 # 3. Yangi kodlarni GitHub dan pull qilish
 git pull origin main
@@ -21,10 +21,10 @@ pip install psutil==5.9.0
 chmod +x check_logs.sh
 
 # 7. Gunicorn service restart
-sudo systemctl restart xurshid
+sudo systemctl restart umit_aka
 
 # 8. Service holatini tekshirish
-sudo systemctl status xurshid
+sudo systemctl status umit_aka
 
 # 9. Health check test
 curl http://localhost:5000/health
@@ -35,15 +35,15 @@ curl http://localhost:5000/health
 # ========================================
 # TEZKOR DEPLOY (bitta buyruq bilan)
 # ========================================
-ssh root@sergeli0606.uz "cd /var/www/xurshid && git pull origin main && source venv/bin/activate && sudo systemctl restart xurshid && sleep 3 && sudo systemctl status xurshid --no-pager"
+ssh root@46.101.126.39 "cd /var/www/umit_aka && git pull origin main && source venv/bin/activate && sudo systemctl restart umit_aka && sleep 3 && sudo systemctl status umit_aka --no-pager"
 
 # ========================================
 # TEKSHIRISH
 # ========================================
 
 # Browser orqali:
-# 1. https://sergeli0606.uz/health
-# 2. https://sergeli0606.uz/monitoring/dashboard (login qiling)
+# 1. https://YOUR_DOMAIN/health
+# 2. https://YOUR_DOMAIN/monitoring/dashboard (login qiling)
 
 # ========================================
 # MUAMMO BO'LSA
@@ -53,7 +53,7 @@ ssh root@sergeli0606.uz "cd /var/www/xurshid && git pull origin main && source v
 tail -50 logs/error.log
 
 # Gunicorn loglarni ko'rish:
-sudo journalctl -u xurshid -n 50
+sudo journalctl -u umit_aka -n 50
 
 # Service restart:
-sudo systemctl restart xurshid
+sudo systemctl restart umit_aka

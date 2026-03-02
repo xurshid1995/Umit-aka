@@ -1,6 +1,6 @@
-# 🎯 QO'SHIMCHA HIMOYALAR - DEPLOYMENT GUIDE
+﻿# ğŸ¯ QO'SHIMCHA HIMOYALAR - DEPLOYMENT GUIDE
 
-## ✅ Amalga oshirilgan o'zgarishlar:
+## âœ… Amalga oshirilgan o'zgarishlar:
 
 ### 1. **Query Timeout (10 sekund)**
 - `app.py` - Database connection settings'da `statement_timeout=10000` qo'shildi
@@ -23,7 +23,7 @@
 
 ---
 
-## 📦 Serverga Deployment Qadamlari:
+## ğŸ“¦ Serverga Deployment Qadamlari:
 
 ### 1. Fayllarni serverga yuklash
 
@@ -42,7 +42,7 @@ scp create_api_operations_table.py root@YOUR_SERVER:/var/www/sayt_2025/
 ssh root@YOUR_SERVER
 
 # Loyiha papkasiga o'tish
-cd /var/www/Xurshid
+cd /var/www/umit_aka
 
 # Virtual environment aktivlashtirish
 source venv/bin/activate
@@ -56,19 +56,19 @@ python create_api_operations_table.py
 ============================================================
 API OPERATIONS JADVALI YARATISH
 ============================================================
-✅ api_operations jadvali yaratildi
-✅ Index'lar yaratildi
-✅ Tozalash funksiyasi yaratildi
+âœ… api_operations jadvali yaratildi
+âœ… Index'lar yaratildi
+âœ… Tozalash funksiyasi yaratildi
 ```
 
 ### 3. Gunicorn qayta ishga tushirish
 
 ```bash
 # Systemd service'ni qayta ishga tushirish
-sudo systemctl restart Xurshid
+sudo systemctl restart umit_aka
 
 # Status tekshirish
-sudo systemctl status Xurshid
+sudo systemctl status umit_aka
 
 # Log'larni kuzatish
 tail -f logs/error.log
@@ -122,18 +122,18 @@ tail -f logs/error.log | grep "SLOW API\|completed in"
 
 **Kutilayotgan loglar:**
 ```
-🆔 [a1b2c3d4] Transfer started
-✅ [a1b2c3d4] Transfer completed in 0.45s
+ğŸ†” [a1b2c3d4] Transfer started
+âœ… [a1b2c3d4] Transfer completed in 0.45s
 
 # Yoki sekin bo'lsa:
-⚠️ [a1b2c3d4] SLOW API: Transfer took 6.78s (max: 5s)
+âš ï¸ [a1b2c3d4] SLOW API: Transfer took 6.78s (max: 5s)
 ```
 
 #### C) Double-Click Test
 
 1. Brauzerni oching: `http://YOUR_SERVER/sales`
 2. Mahsulot qo'shing va to'lovni tasdiqlash tugmasini bosing
-3. Tugma o'chadi va "⏳ Saqlanmoqda..." ko'rsatadi
+3. Tugma o'chadi va "â³ Saqlanmoqda..." ko'rsatadi
 4. 3 sekund davomida qayta bosib bo'lmaydi
 
 ### 5. Database'dan tekshirish
@@ -156,7 +156,7 @@ SELECT cleanup_old_api_operations();
 
 ---
 
-## 📊 Monitoring va Statistika
+## ğŸ“Š Monitoring va Statistika
 
 ### Log'larda kuzatish kerak bo'lgan narsalar:
 
@@ -186,7 +186,7 @@ crontab -e
 
 ---
 
-## 🔧 Muammolarni hal qilish
+## ğŸ”§ Muammolarni hal qilish
 
 ### Muammo 1: Migration xatosi
 
@@ -227,28 +227,28 @@ sudo -u postgres psql sayt_db < create_api_operations_table.sql
 
 ---
 
-## 📈 Natija - 100% Himoyalangan Tizim
+## ğŸ“ˆ Natija - 100% Himoyalangan Tizim
 
 | Himoya Turi | Maqsad | Status |
 |-------------|--------|--------|
-| Transaction + Rollback | Ma'lumot yaxlitligi | ✅ Faol |
-| Try-Except bloklar | Xatoliklarni tutish | ✅ Faol |
-| Connection pool | Database ulanish | ✅ Faol |
-| **Query timeout** | Sekin query'lar | ✅ **YANGI** |
-| **Timeout monitoring** | API monitoring | ✅ **YANGI** |
-| **Idempotency keys** | Takroriy so'rovlar | ✅ **YANGI** |
-| **Double-click himoyasi** | UI xatoliklari | ✅ **YANGI** |
-| **Operation ID tracking** | Debugging | ✅ **YANGI** |
+| Transaction + Rollback | Ma'lumot yaxlitligi | âœ… Faol |
+| Try-Except bloklar | Xatoliklarni tutish | âœ… Faol |
+| Connection pool | Database ulanish | âœ… Faol |
+| **Query timeout** | Sekin query'lar | âœ… **YANGI** |
+| **Timeout monitoring** | API monitoring | âœ… **YANGI** |
+| **Idempotency keys** | Takroriy so'rovlar | âœ… **YANGI** |
+| **Double-click himoyasi** | UI xatoliklari | âœ… **YANGI** |
+| **Operation ID tracking** | Debugging | âœ… **YANGI** |
 
 ---
 
-## 🎉 Xulosa
+## ğŸ‰ Xulosa
 
 Tizimingiz endi:
-- ⏱️ **Timeout muammolaridan himoyalangan**
-- 🔄 **Takroriy so'rovlarni qayta ishlamaydi**
-- 🖱️ **Double-click xatolaridan xoli**
-- 📊 **Barcha operatsiyalar monitoring qilinadi**
-- 🛡️ **100% xavfsiz va ishonchli**
+- â±ï¸ **Timeout muammolaridan himoyalangan**
+- ğŸ”„ **Takroriy so'rovlarni qayta ishlamaydi**
+- ğŸ–±ï¸ **Double-click xatolaridan xoli**
+- ğŸ“Š **Barcha operatsiyalar monitoring qilinadi**
+- ğŸ›¡ï¸ **100% xavfsiz va ishonchli**
 
-Deployment'dan keyin test qilishni unutmang! 🚀
+Deployment'dan keyin test qilishni unutmang! ğŸš€

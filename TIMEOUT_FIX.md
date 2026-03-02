@@ -1,10 +1,10 @@
-# TIMEOUT MUAMMOSI YECHIMI
+﻿# TIMEOUT MUAMMOSI YECHIMI
 
-## 🔍 Muammo
+## ğŸ” Muammo
 
 Foydalanuvchi uzoq vaqt saytdan foydalanmay tursa (10+ minut), keyingi action qilganda xatolik yuzaga keladi.
 
-## 🎯 Sabab
+## ğŸ¯ Sabab
 
 **PostgreSQL Configuration:**
 - `idle_in_transaction_session_timeout = 600000ms (10 minut)`
@@ -15,7 +15,7 @@ Foydalanuvchi uzoq vaqt saytdan foydalanmay tursa (10+ minut), keyingi action qi
   - Connection 10 minut idle turgandan keyin PostgreSQL uni kill qiladi
   - Lekin pool_recycle 1 soatda yangilanadi - juda kech!
 
-## ✅ Yechim
+## âœ… Yechim
 
 ### 1. Pool Recycle Optimizatsiya ([app.py](app.py#L90))
 
@@ -37,14 +37,14 @@ Foydalanuvchi uzoq vaqt saytdan foydalanmay tursa (10+ minut), keyingi action qi
 'statement_timeout=30000'  # 30 sekund (murakkab querylar uchun)
 ```
 
-## 📊 Natija
+## ğŸ“Š Natija
 
-- ✅ Connection har 9 minutda yangilanadi (10 minut timeout'dan oldin)
-- ✅ Dead connection xatoliklari oldini oladi
-- ✅ `pool_pre_ping: True` + `pool_recycle: 540` kombinatsiyasi ishonchli ishlaydi
-- ✅ Statement timeout 30s ga ko'tarildi
+- âœ… Connection har 9 minutda yangilanadi (10 minut timeout'dan oldin)
+- âœ… Dead connection xatoliklari oldini oladi
+- âœ… `pool_pre_ping: True` + `pool_recycle: 540` kombinatsiyasi ishonchli ishlaydi
+- âœ… Statement timeout 30s ga ko'tarildi
 
-## 🔄 Qo'shimcha Yaxshilanishlar
+## ğŸ”„ Qo'shimcha Yaxshilanishlar
 
 Agar muammo davom etsa:
 
@@ -69,18 +69,18 @@ setInterval(() => {
 **PostgreSQL (agar admin huquqi bo'lsa):**
 ```sql
 -- idle_in_transaction timeout'ni ko'paytirish
-ALTER DATABASE xurshid_db SET idle_in_transaction_session_timeout = 1800000; -- 30 minut
+ALTER DATABASE umit_aka_db SET idle_in_transaction_session_timeout = 1800000; -- 30 minut
 ```
 
-## 📝 Test
+## ğŸ“ Test
 
 1. Saytga kiring
 2. 10-15 minut hech narsa qilmang
 3. Biror action qiling (masalan mahsulot qo'shish)
-4. ✅ Xatolik bo'lmasligi kerak
+4. âœ… Xatolik bo'lmasligi kerak
 
-## 🗓️ Deploy
+## ğŸ—“ï¸ Deploy
 
 - **Date:** 2026-02-08 16:35:28
-- **Changes:** app.py - pool_recycle: 3600 → 540
-- **Status:** ✅ Production'da ishlayapti
+- **Changes:** app.py - pool_recycle: 3600 â†’ 540
+- **Status:** âœ… Production'da ishlayapti

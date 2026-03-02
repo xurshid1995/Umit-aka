@@ -1,63 +1,63 @@
-#!/bin/bash
+﻿#!/bin/bash
 # Serverga deploy qilish script'i
 
-echo "🚀 Serverga deploy qilish boshlandi..."
+echo "ğŸš€ Serverga deploy qilish boshlandi..."
 echo ""
 
 # 1. Loyiha papkasiga o'tish
-echo "📁 Loyiha papkasiga o'tish..."
-cd /var/www/xurshid || exit
+echo "ğŸ“ Loyiha papkasiga o'tish..."
+cd /var/www/umit_aka || exit
 
 # 2. Yangi kodlarni pull qilish
-echo "⬇️ GitHub'dan yangi kodlarni pull qilish..."
+echo "â¬‡ï¸ GitHub'dan yangi kodlarni pull qilish..."
 git pull origin main
 
 # 3. Virtual environment aktivlashtirish
-echo "🔧 Virtual environment aktivlashtirish..."
+echo "ğŸ”§ Virtual environment aktivlashtirish..."
 source venv/bin/activate || exit
 
 # 4. Dependencies yangilash (agar kerak bo'lsa)
-echo "📦 Dependencies tekshirish..."
+echo "ğŸ“¦ Dependencies tekshirish..."
 pip install -r requirements.txt --quiet
 
 # 5. Telegram bot service'ni restart qilish (agar ishlab turgan bo'lsa)
-echo "🤖 Telegram bot restart..."
+echo "ğŸ¤– Telegram bot restart..."
 if systemctl is-active --quiet telegram-bot; then
     sudo systemctl restart telegram-bot
-    echo "✅ Telegram bot restart qilindi"
+    echo "âœ… Telegram bot restart qilindi"
 else
-    echo "⚠️ Telegram bot service ishlamayapti"
+    echo "âš ï¸ Telegram bot service ishlamayapti"
 fi
 
 # 6. Gunicorn service restart
-echo "🔄 Gunicorn service restart..."
-sudo systemctl restart xurshid
+echo "ğŸ”„ Gunicorn service restart..."
+sudo systemctl restart umit_aka
 
 # 7. Service statusini tekshirish
 echo ""
-echo "📊 Service status:"
-sudo systemctl status xurshid --no-pager -n 5
+echo "ğŸ“Š Service status:"
+sudo systemctl status umit_aka --no-pager -n 5
 
 # 8. Telegram bot statusini tekshirish
 echo ""
-echo "🤖 Telegram bot status:"
+echo "ğŸ¤– Telegram bot status:"
 if systemctl is-active --quiet telegram-bot; then
     sudo systemctl status telegram-bot --no-pager -n 5
 fi
 
 # 9. Health check
 echo ""
-echo "🏥 Health check..."
+echo "ğŸ¥ Health check..."
 sleep 2
-curl -s http://localhost:5000/health || echo "❌ Health check xato"
+curl -s http://localhost:5000/health || echo "âŒ Health check xato"
 
 # 10. Success message
 echo ""
-echo "✅ Deploy muvaffaqiyatli yakunlandi!"
+echo "âœ… Deploy muvaffaqiyatli yakunlandi!"
 echo ""
-echo "🌐 Website: https://sergeli0606.uz"
-echo "📊 Monitoring: https://sergeli0606.uz/monitoring/dashboard"
+echo "ğŸŒ Website: https://YOUR_DOMAIN"
+echo "ğŸ“Š Monitoring: https://YOUR_DOMAIN/monitoring/dashboard"
 echo ""
-echo "📝 Loglarni tekshirish uchun:"
+echo "ğŸ“ Loglarni tekshirish uchun:"
 echo "   tail -f logs/app.log"
 echo "   tail -f logs/telegram_bot.log"

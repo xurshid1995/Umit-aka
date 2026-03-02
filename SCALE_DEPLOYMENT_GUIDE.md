@@ -1,16 +1,16 @@
-# 5 TA DO'KON + 5 TA SKLAD UCHUN SERVER SOZLASH
-## Server: 164.92.177.172
+﻿# 5 TA DO'KON + 5 TA SKLAD UCHUN SERVER SOZLASH
+## Server: 46.101.126.39
 
-## 📋 CURRENT STATUS
+## ğŸ“‹ CURRENT STATUS
 
-### ✅ Tayyor:
+### âœ… Tayyor:
 - Database struktura ready
 - Indekslar optimallangan (44 ta index)
 - Connection pool configured
 - 3 Gunicorn workers
 - Nginx konfiguratsiyalangan
 
-### 🔧 Talab qilinadigan o'zgarishlar:
+### ğŸ”§ Talab qilinadigan o'zgarishlar:
 1. PostgreSQL optimization
 2. Monitoring qo'shish
 3. Backup strategiyasi
@@ -18,19 +18,19 @@
 
 ---
 
-## 🚀 DEPLOYMENT STEPS
+## ğŸš€ DEPLOYMENT STEPS
 
-### 1️⃣ PostgreSQL Optimizatsiya
+### 1ï¸âƒ£ PostgreSQL Optimizatsiya
 
 ```bash
 # Serverga ulanish
-ssh root@164.92.177.172
+ssh root@46.101.126.39
 
 # Fayl yuklash (mahalliy kompyuterdan)
-scp d:\hisobot\Xurshid\postgresql_optimization_2gb.sql root@164.92.177.172:/tmp/
+scp d:\hisobot\Umit aka\postgresql_optimization_2gb.sql root@46.101.126.39:/tmp/
 
 # Serverda qo'llash
-sudo -u postgres psql -d xurshid_db -f /tmp/postgresql_optimization_2gb.sql
+sudo -u postgres psql -d umit_aka_db -f /tmp/postgresql_optimization_2gb.sql
 
 # PostgreSQL restart
 sudo systemctl restart postgresql
@@ -40,26 +40,26 @@ sudo -u postgres psql -c "SHOW shared_buffers;"
 sudo -u postgres psql -c "SHOW effective_cache_size;"
 ```
 
-### 2️⃣ Monitoring Script O'rnatish
+### 2ï¸âƒ£ Monitoring Script O'rnatish
 
 ```bash
 # Script yuklash
-scp d:\hisobot\Xurshid\server_monitoring.sh root@164.92.177.172:/root/
+scp d:\hisobot\Umit aka\server_monitoring.sh root@46.101.126.39:/root/
 
 # Ruxsat berish
-ssh root@164.92.177.172 "chmod +x /root/server_monitoring.sh"
+ssh root@46.101.126.39 "chmod +x /root/server_monitoring.sh"
 
 # Ishga tushirish
-ssh root@164.92.177.172 "/root/server_monitoring.sh"
+ssh root@46.101.126.39 "/root/server_monitoring.sh"
 
 # Cron job qo'shish (har kuni soat 9:00 da)
-ssh root@164.92.177.172 "echo '0 9 * * * /root/server_monitoring.sh > /var/log/server_monitoring.log 2>&1' | crontab -"
+ssh root@46.101.126.39 "echo '0 9 * * * /root/server_monitoring.sh > /var/log/server_monitoring.log 2>&1' | crontab -"
 ```
 
-### 3️⃣ pg_stat_statements Extension (opsional, lekin tavsiya etiladi)
+### 3ï¸âƒ£ pg_stat_statements Extension (opsional, lekin tavsiya etiladi)
 
 ```bash
-ssh root@164.92.177.172
+ssh root@46.101.126.39
 
 # postgresql.conf edit qilish
 sudo nano /etc/postgresql/16/main/postgresql.conf
@@ -71,13 +71,13 @@ sudo nano /etc/postgresql/16/main/postgresql.conf
 sudo systemctl restart postgresql
 
 # Extension yaratish
-sudo -u postgres psql -d xurshid_db -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
+sudo -u postgres psql -d umit_aka_db -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
 
 # Tekshirish
-sudo -u postgres psql -d xurshid_db -c "SELECT * FROM pg_stat_statements LIMIT 1;"
+sudo -u postgres psql -d umit_aka_db -c "SELECT * FROM pg_stat_statements LIMIT 1;"
 ```
 
-### 4️⃣ Backup Strategiyasi
+### 4ï¸âƒ£ Backup Strategiyasi
 
 ```bash
 # Backup script yaratish
@@ -88,15 +88,15 @@ DATE=$(date +%Y%m%d_%H%M%S)
 mkdir -p $BACKUP_DIR
 
 # Database backup
-sudo -u postgres pg_dump xurshid_db > $BACKUP_DIR/xurshid_db_$DATE.sql
+sudo -u postgres pg_dump umit_aka_db > $BACKUP_DIR/umit_aka_db_$DATE.sql
 
 # Compress
-gzip $BACKUP_DIR/xurshid_db_$DATE.sql
+gzip $BACKUP_DIR/umit_aka_db_$DATE.sql
 
 # Eski backuplarni o'chirish (7 kundan eski)
 find $BACKUP_DIR -name "*.sql.gz" -mtime +7 -delete
 
-echo "Backup completed: xurshid_db_$DATE.sql.gz"
+echo "Backup completed: umit_aka_db_$DATE.sql.gz"
 EOF
 
 # Ruxsat berish
@@ -111,7 +111,7 @@ echo "0 2 * * * /root/backup_database.sh >> /var/log/backup.log 2>&1" | crontab 
 
 ---
 
-## 📊 EXPECTED PERFORMANCE
+## ğŸ“Š EXPECTED PERFORMANCE
 
 ### Current (1 do'kon + 2 sklad):
 - RAM usage: ~750MB (37%)
@@ -131,23 +131,23 @@ echo "0 2 * * * /root/backup_database.sh >> /var/log/backup.log 2>&1" | crontab 
 
 ---
 
-## 🎯 SCALING PLAN
+## ğŸ¯ SCALING PLAN
 
-### Phase 1: Current Setup (DONE ✅)
+### Phase 1: Current Setup (DONE âœ…)
 - 2GB RAM
 - 2 CPU cores
 - 3 Gunicorn workers
 - PostgreSQL default config
 - **Capacity:** 3-5 locations
 
-### Phase 2: After Optimization (IN PROGRESS 🔄)
+### Phase 2: After Optimization (IN PROGRESS ğŸ”„)
 - 2GB RAM
 - PostgreSQL tuned
 - Monitoring active
 - Backup automated
 - **Capacity:** 5-10 locations
 
-### Phase 3: Hardware Upgrade (FUTURE 📅)
+### Phase 3: Hardware Upgrade (FUTURE ğŸ“…)
 - 4GB RAM
 - 4-5 Gunicorn workers
 - Enhanced monitoring
@@ -155,21 +155,21 @@ echo "0 2 * * * /root/backup_database.sh >> /var/log/backup.log 2>&1" | crontab 
 
 ---
 
-## ⚠️ POTENTIAL ISSUES & SOLUTIONS
+## âš ï¸ POTENTIAL ISSUES & SOLUTIONS
 
 ### Issue 1: Sekin query'lar
 **Symptoms:** Response time >500ms
 **Solution:**
 ```bash
 # Slow queries topish
-sudo -u postgres psql -d xurshid_db << 'EOF'
+sudo -u postgres psql -d umit_aka_db << 'EOF'
 SELECT query, calls, mean_exec_time, max_exec_time
 FROM pg_stat_statements 
 ORDER BY mean_exec_time DESC LIMIT 10;
 EOF
 
 # Missing indexes topish
-sudo -u postgres psql -d xurshid_db << 'EOF'
+sudo -u postgres psql -d umit_aka_db << 'EOF'
 SELECT schemaname, tablename, attname, n_distinct, correlation
 FROM pg_stats 
 WHERE schemaname = 'public' 
@@ -187,10 +187,10 @@ EOF
 workers = 2  # 3 o'rniga
 
 # Service restart
-sudo systemctl restart xurshid_app
+sudo systemctl restart umit_aka_app
 
 # Yoki RAM upgrade:
-# DigitalOcean droplet resize: 2GB → 4GB
+# DigitalOcean droplet resize: 2GB â†’ 4GB
 ```
 
 ### Issue 3: Database connection leak
@@ -198,7 +198,7 @@ sudo systemctl restart xurshid_app
 **Solution:**
 ```bash
 # Idle connections ko'rish
-sudo -u postgres psql -d xurshid_db -c "
+sudo -u postgres psql -d umit_aka_db -c "
 SELECT pid, usename, application_name, state, state_change
 FROM pg_stat_activity 
 WHERE state = 'idle' 
@@ -206,7 +206,7 @@ AND state_change < now() - interval '10 minutes';
 "
 
 # Ularni o'chirish (ehtiyotkorlik bilan!)
-# sudo -u postgres psql -d xurshid_db -c "
+# sudo -u postgres psql -d umit_aka_db -c "
 # SELECT pg_terminate_backend(pid) 
 # FROM pg_stat_activity 
 # WHERE state = 'idle' 
@@ -216,7 +216,7 @@ AND state_change < now() - interval '10 minutes';
 
 ---
 
-## 📈 MONITORING CHECKLIST
+## ğŸ“ˆ MONITORING CHECKLIST
 
 ### Kundalik (Automated):
 - [ ] Server monitoring script ishga tushdi
@@ -237,31 +237,31 @@ AND state_change < now() - interval '10 minutes';
 
 ---
 
-## 🔗 USEFUL COMMANDS
+## ğŸ”— USEFUL COMMANDS
 
 ```bash
 # Server monitoringni ishga tushirish
-ssh root@164.92.177.172 "/root/server_monitoring.sh"
+ssh root@46.101.126.39 "/root/server_monitoring.sh"
 
 # Real-time server ko'rish
-ssh root@164.92.177.172 "htop"
+ssh root@46.101.126.39 "htop"
 
 # PostgreSQL live activity
-ssh root@164.92.177.172 "watch -n 2 'sudo -u postgres psql -d xurshid_db -c \"SELECT count(*), state FROM pg_stat_activity GROUP BY state;\"'"
+ssh root@46.101.126.39 "watch -n 2 'sudo -u postgres psql -d umit_aka_db -c \"SELECT count(*), state FROM pg_stat_activity GROUP BY state;\"'"
 
 # Application logs
-ssh root@164.92.177.172 "tail -f /var/www/xurshid/logs/error.log"
+ssh root@46.101.126.39 "tail -f /var/www/umit_aka/logs/error.log"
 
 # Nginx access log
-ssh root@164.92.177.172 "tail -f /var/www/xurshid/logs/access.log"
+ssh root@46.101.126.39 "tail -f /var/www/umit_aka/logs/access.log"
 
 # System resources
-ssh root@164.92.177.172 "free -h && df -h && uptime"
+ssh root@46.101.126.39 "free -h && df -h && uptime"
 ```
 
 ---
 
-## 📞 SUPPORT
+## ğŸ“ SUPPORT
 
 Agar quyidagi holatlar yuz bersa darhol tekshiring:
 
@@ -272,7 +272,7 @@ Agar quyidagi holatlar yuz bersa darhol tekshiring:
 
 ---
 
-## ✅ DEPLOYMENT CHECKLIST
+## âœ… DEPLOYMENT CHECKLIST
 
 - [ ] PostgreSQL optimizatsiya qo'llanildi
 - [ ] Monitoring script o'rnatildi
@@ -286,6 +286,6 @@ Agar quyidagi holatlar yuz bersa darhol tekshiring:
 ---
 
 **Last updated:** 2026-02-06
-**Server:** 164.92.177.172
+**Server:** 46.101.126.39
 **Target:** 5 do'kon + 5 sklad
-**Status:** ✅ Ready for deployment
+**Status:** âœ… Ready for deployment

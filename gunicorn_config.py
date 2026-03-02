@@ -1,4 +1,4 @@
-"""Gunicorn configuration file"""
+﻿"""Gunicorn configuration file"""
 import multiprocessing
 import os
 
@@ -7,7 +7,7 @@ bind = os.getenv('BIND', '127.0.0.1:5000')
 backlog = 2048
 
 # Worker processes
-# ✅ Optimizatsiya: 2GB RAM uchun workers kamaytirildi (5→3)
+# âœ… Optimizatsiya: 2GB RAM uchun workers kamaytirildi (5â†’3)
 # Default formula: cpu_count * 2 + 1 = 5 (1 CPU da)
 # Yangi: 3 worker (har biri ~70MB = 210MB)
 workers = int(os.getenv('WORKERS', 3))
@@ -28,7 +28,7 @@ loglevel = 'warning'  # info -> warning (SIGTERM loglarini yashirish uchun)
 access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
 
 # Process naming
-proc_name = 'xurshid_app'
+proc_name = 'umit_aka_app'
 
 # Server mechanics
 daemon = False
