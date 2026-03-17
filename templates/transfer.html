@@ -28,9 +28,8 @@
     /* Ikkita layout uchun grid */
     .transfer-layouts {
         display: grid;
-        grid-template-columns: 665px 665px;
+        grid-template-columns: 1fr 1fr;
         gap: 20px;
-        justify-content: center;
         padding: 20px;
         align-items: start;
     }
@@ -40,7 +39,7 @@
         border-radius: 8px;
         padding: 20px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        width: 665px;
+        width: 100%;
         box-sizing: border-box;
     }
 
@@ -92,9 +91,10 @@
     }
 
     .transfer-product-table {
-        width: 625px !important; /* 365 + 100 + 85 + 75 = 625px */
-        min-width: 625px !important;
+        width: 100% !important;
+        min-width: unset !important;
         border-collapse: collapse;
+        table-layout: auto;
     }
 
     .products-table thead {
@@ -322,11 +322,9 @@
     }
 
     /* Responsive */
-    @media (max-width: 1400px) {
+    @media (max-width: 900px) {
         .transfer-layouts {
             grid-template-columns: 1fr;
-            max-width: 665px;
-            margin: 0 auto;
         }
     }
 
